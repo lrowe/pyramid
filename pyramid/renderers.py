@@ -456,8 +456,10 @@ class RendererHelper(object):
         if result is not None:
             if isinstance(result, text_type):
                 response.text = result
-            else:
+            elif isinstance(result, bytes):
                 response.body = result
+            else:
+                response.app_iter = result
 
         return response
 
