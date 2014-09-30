@@ -2532,6 +2532,19 @@ class TestViewDeriver(unittest.TestCase):
         context = testing.DummyResource()
         self.assertEqual(result(context, request).body, b'moo')
 
+    def test_requestonly_function_with_null_renderer_request_override(self):
+        from pyramid.renderers import null_renderer
+        r = {}
+        def view(request):
+            return r
+        deriver = self._makeOne(renderer='string')
+        result = deriver(view)
+        self.assertFalse(result is view)
+        request = self._makeRequest()
+        request.override_renderer = null_renderer
+        context = testing.DummyResource()
+        self.assertIs(result(context, request), r)
+
     def test_requestonly_function_with_renderer_request_has_view(self):
         response = DummyResponse()
         class moo(object):

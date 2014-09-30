@@ -365,6 +365,8 @@ class ViewDeriver(object):
                     if 'override_renderer' in attrs:
                         # renderer overridden by newrequest event or other
                         renderer_name = attrs.pop('override_renderer')
+                        if renderer_name is renderers.null_renderer:
+                            return result
                         renderer = renderers.RendererHelper(
                             name=renderer_name,
                             package=self.kw.get('package'),
